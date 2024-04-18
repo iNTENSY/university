@@ -1,28 +1,13 @@
-import time
+import asyncio
 
-import serial
-
-
-# Открываем последовательный порт
-ser = serial.Serial('COM6', 9600)
+from arduino.repository.repository import Repository
+from arduino.services.application import ArduinoSerial, APIService, Receiver, App
 
 
-def receive():
-    data = ser.readline().decode()
-
-    # -----------
-    #
-    # Проверка полученных данных из локальной базы данных.
-    #
-    # -----------
-
-    # -----------
-    #
-    # Отправка данных по API.
-    #
-    # -----------
-
-
-while True:
-    time.sleep(2)
-    receive()
+if __name__ == '__main__':
+    arduino = ArduinoSerial(com="COM6", port=9200)
+    api = APIService()
+    repository = Repository()
+    receiver = Receiver(arduino, repository, api)
+    app = App(receiver)
+    asyncio.run(app.start())
