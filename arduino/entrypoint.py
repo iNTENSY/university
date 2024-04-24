@@ -1,7 +1,7 @@
 import asyncio
 
 from arduino.services.api import APIService
-from arduino.services.application import App
+from arduino.services.app import App
 from arduino.services.arduino import ArduinoSerial
 from arduino.services.receiver import Receiver
 

@@ -4,12 +4,6 @@ from arduino.interfaces.receiver import IReceiver
 
 
 class Receiver(IReceiver):
-    def __init__(self,
-                 arduino: IArduinoSerial,
-                 api_service: IApi):
-        self.arduino = arduino
-        self.api_service = api_service
-
     async def receive(self) -> None:
         decoded_data: str = await self.arduino.get_from_arduino()
 
