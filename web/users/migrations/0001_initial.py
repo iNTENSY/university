@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('middle_name', models.CharField(blank=True, max_length=150, null=True, verbose_name='Отчество')),
                 ('telegram_id_notification', models.CharField(blank=True, max_length=50, null=True, verbose_name='ID чата для уведомления')),
                 ('card', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='owner', to='attendance.cards', verbose_name='Пользователь')),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
+                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get_card all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
                 ('group', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='users.groups', verbose_name='Группа')),
             ],

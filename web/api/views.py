@@ -27,7 +27,7 @@ class AttendanceViewSet(mixins.CreateModelMixin,
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
 
-        user = Cards.objects.get(identify_number=request.data.get("card")).owner
+        user = Cards.objects.get(identify_number=request.data.get_card("card")).owner
         if user.telegram_id_notification:
             message = f"{user} прошел турникет университета"
             url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?chat_id={user.telegram_id_notification}&text={message}"
