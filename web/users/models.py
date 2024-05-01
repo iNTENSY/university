@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from attendance.models import Cards, Attendance
 
@@ -23,7 +23,7 @@ class Users(AbstractUser):
 
 
 class AttendanceManager(models.Manager):
-    def make_for_group(self, title: str, from_date: str = None):
+    def make_for_group(self, title: str, from_date: str = None, to_date: str = None):
         try:
             group = Groups.objects.get(title=title)
         except ObjectDoesNotExist:
@@ -31,8 +31,16 @@ class AttendanceManager(models.Manager):
         statement = (
             group.students
             .annotate(
-                counter=Count("card__attendance__created_at__date", distinct=True)
+                counter=Count(
+                    "card__attendance__created_at__date",
+                    distinct=True,
+                    filter=Q(
+                        card__attendance__created_at__date__gte=from_date,
+                        card__attendance__created_at__date__lte=to_date,
+                    )
+                )
             )
+            .filter()
             .values("last_name", "first_name", "middle_name", "counter")
         )
         return statement

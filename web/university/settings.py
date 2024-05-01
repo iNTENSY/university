@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import datetime
+import os.path
 from pathlib import Path
 
 import environ
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     "djoser",
     "debug_toolbar",
     "drf_spectacular",
+    "django_filters",
 
     # applications
     "users.apps.UsersConfig",
@@ -73,7 +75,7 @@ ROOT_URLCONF = 'university.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,6 +98,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'TIME_ZONE': "Europe/Moscow"
     }
 }
 
@@ -157,13 +160,19 @@ SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
+CURRENT_DATE = datetime.datetime.now().date()
 EDUCATION_DATES = {
     "first_half": {
-        "start": "01.09",
-        "end": "31.12"
+        "start": datetime.date(day=1, month=9, year=CURRENT_DATE.year),
+        "end": datetime.date(day=31, month=12, year=CURRENT_DATE.year)
     },
     "second_half": {
-        "start": "06.02",
-        "end": "31.05"
+        "start": datetime.date(day=6, month=2, year=CURRENT_DATE.year),
+        "end": datetime.date(day=31, month=5, year=CURRENT_DATE.year)
     }
 }
+
+if CURRENT_DATE >= EDUCATION_DATES["second_half"]["start"]:
+    CURRENT_EDUCATION_HALF = EDUCATION_DATES["second_half"]
+else:
+    CURRENT_EDUCATION_HALF = EDUCATION_DATES["first_half"]
