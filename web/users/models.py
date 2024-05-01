@@ -1,7 +1,9 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import Count
 
-from attendance.models import Cards
+from attendance.models import Cards, Attendance
 
 
 class Users(AbstractUser):
@@ -18,3 +20,36 @@ class Users(AbstractUser):
 
     def __str__(self) -> str:
         return f"{self.last_name} {self.first_name}{f' {self.middle_name}' if self.middle_name else ''}".title()
+
+
+class AttendanceManager(models.Manager):
+    def make_for_group(self, title: str, from_date: str = None):
+        try:
+            group = Groups.objects.get(title=title)
+        except ObjectDoesNotExist:
+            return None
+        statement = (
+            group.students
+            .annotate(
+                counter=Count("card__attendance__created_at__date", distinct=True)
+            )
+            .values("last_name", "first_name", "middle_name", "counter")
+        )
+        return statement
+
+
+class Groups(models.Model):
+    title = models.CharField(verbose_name="Краткое наименование группы", max_length=20, unique=True)
+    curator = models.ForeignKey(verbose_name="Куратор", to=Users, on_delete=models.SET_NULL, null=True, related_name="self_groups")
+    students = models.ManyToManyField(verbose_name="Студенты", to=Users, related_name="self_group", blank=True)
+
+    objects = models.Manager()
+    attendance = AttendanceManager()
+
+    class Meta:
+        app_label = "users"
+        verbose_name = "Группа"
+        verbose_name_plural = "Группы"
+
+    def __str__(self) -> str:
+        return self.title

@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from users.models import Groups
 from .models import Cards, Attendance
 
 
@@ -10,4 +11,9 @@ class CardsAdmin(admin.ModelAdmin):
 
 @admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Groups)
+class GroupsAdmin(admin.ModelAdmin):
     pass

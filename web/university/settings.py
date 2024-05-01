@@ -156,3 +156,14 @@ BOT_TOKEN = env.str("BOT_TOKEN")
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('Bearer',),
 }
+
+EDUCATION_DATES = {
+    "first_half": {
+        "start": "01.09",
+        "end": "31.12"
+    },
+    "second_half": {
+        "start": "06.02",
+        "end": "31.05"
+    }
+}

@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -26,7 +25,7 @@ class Cards(AbstractCreatedAndUpdatedAtModel):
 
 class Attendance(AbstractCreatedAndUpdatedAtModel):
     card = models.ForeignKey(verbose_name="Ключ-карта", to="Cards", on_delete=models.SET_NULL,
-                             null=True, to_field="identify_number")
+                             null=True, to_field="identify_number", related_name="attendance")
 
     class Meta:
         verbose_name = "Посещаемость"
