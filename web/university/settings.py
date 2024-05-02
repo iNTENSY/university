@@ -176,3 +176,6 @@ if CURRENT_DATE >= EDUCATION_DATES["second_half"]["start"]:
     CURRENT_EDUCATION_HALF = EDUCATION_DATES["second_half"]
 else:
     CURRENT_EDUCATION_HALF = EDUCATION_DATES["first_half"]
+
+
+TEMPLATE_ATTENDANCE_FILE = os.path.join(BASE_DIR, 'templates/documents/attendance.doc')

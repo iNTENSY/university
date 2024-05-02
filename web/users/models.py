@@ -23,7 +23,7 @@ class Users(AbstractUser):
 
 
 class AttendanceManager(models.Manager):
-    def make_for_group(self, title: str, from_date: str = None, to_date: str = None):
+    def make_for_group_by_title(self, title: str, from_date: str = None, to_date: str = None):
         try:
             group = Groups.objects.get(title=title)
         except ObjectDoesNotExist:

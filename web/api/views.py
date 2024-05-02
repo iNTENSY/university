@@ -72,7 +72,7 @@ class GroupAttendanceViewSets(mixins.ListModelMixin,
 
     def list(self, *args, **kwargs):
         from_date, to_date = self.get_validated_date_format()
-        result = Groups.attendance.make_for_group(kwargs["title"], from_date, to_date)
+        result = Groups.attendance.make_for_group_by_title(kwargs["title"], from_date, to_date)
         if not result:
             return Response(data={"error": "Group with title not found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = GroupAttendanceSerializer(data=list(result), many=True)
