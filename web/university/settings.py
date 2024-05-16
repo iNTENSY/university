@@ -93,9 +93,12 @@ WSGI_APPLICATION = 'university.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'TIME_ZONE': "Europe/Moscow"
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('POSTGRES_DB', 'postgres'),
+        'USER': env.str('POSTGRES_USER', 'postgres'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD', 'postgres'),
+        'HOST': env.str('DB_HOST', 'localhost'),
+        'PORT': env.str('DB_PORT', 5432)
     }
 }
 
