@@ -1,13 +1,10 @@
-import datetime
 import os.path
-import pprint
 
 from django.contrib import admin
 from django.http import HttpResponse
 from docx import Document
-from docxtpl import DocxTemplate
 
-from university.settings import CURRENT_EDUCATION_HALF, TEMPLATE_ATTENDANCE_FILE, BASE_DIR, CURRENT_DATE
+from university.settings import CURRENT_EDUCATION_HALF, BASE_DIR, CURRENT_DATE
 from users.models import Groups
 from .models import Cards, Attendance
 
@@ -24,10 +21,10 @@ class AttendanceAdmin(admin.ModelAdmin):
 
 @admin.register(Groups)
 class GroupsAdmin(admin.ModelAdmin):
-    actions = ["mark_immortal"]
+    actions = ["download_attendance"]
 
-    @admin.action(description="Импортировать данные в телеграм")
-    def mark_immortal(self, request, queryset):
+    @admin.action(description="Получить данные по посещениям")
+    def download_attendance(self, request, queryset):
         marked_groups = [group.title for group in queryset]
         statistic = [
             {
@@ -59,9 +56,9 @@ class GroupsAdmin(admin.ModelAdmin):
             table.rows[0].cells[0].text = group["group"]
             for idx, data in enumerate(group["people"]):
                 row = table.add_row().cells
-                row[0].text = data["first_name"]
-                row[1].text = data["last_name"]
-                row[2].text = data["middle_name"]
+                row[0].text = data.get("first_name", "")
+                row[1].text = data.get("last_name", "")
+                row[2].text = data.get("middle_name", "")
                 row[3].text = str(data["counter"])
         filepath = os.path.join(BASE_DIR, f"templates/documents/{CURRENT_DATE}.doc")
         document.save(filepath)

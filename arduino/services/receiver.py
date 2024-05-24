@@ -1,5 +1,3 @@
-from arduino.interfaces.api import IApi
-from arduino.interfaces.arduino import IArduinoSerial
 from arduino.interfaces.receiver import IReceiver
 
 

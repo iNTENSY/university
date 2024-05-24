@@ -56,7 +56,7 @@ class Groups(models.Model):
 
     class Meta:
         app_label = "users"
-        verbose_name = "Группа"
+        verbose_name = "объект 'Группа'"
         verbose_name_plural = "Группы"
 
     def __str__(self) -> str:
